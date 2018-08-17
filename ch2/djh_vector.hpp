@@ -131,7 +131,21 @@ void Vector<T>::expand() {
 	for (int i = 0; i < _size; i++)
 		_elem[i] = old[i];
 
-	delete old;
+	delete [] old;
+	old = nullptr;
+}
+
+// 需要指定一个缩容的阈值，这里设置为 25%
+template <typename T>
+void Vector<T>::shrink() {
+	if (_size << 2 > _capacity) return;
+	
+	T *old = _elem;
+	_elem = new T[_capacity >>= 1];	// 容量减半
+	for (int i = 0; i < _size; i++)
+		_elem[i] = old[i];
+
+	delete [] old;
 	old = nullptr;
 }
 
